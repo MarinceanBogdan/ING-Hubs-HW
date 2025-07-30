@@ -76,7 +76,6 @@ public class LoginController {
     }
 
     @GetMapping(value = "/getUser/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasPermission('WRITE')")
     public ResponseEntity<User> getUser(@PathVariable String email, HttpServletRequest request) {
         User user = (User) userRepository.findByEmail(email).orElse(null);
 
