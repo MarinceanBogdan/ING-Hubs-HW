@@ -4,13 +4,13 @@ INSERT INTO permissions (permission_name) VALUES ('WRITE');
 INSERT INTO permissions (permission_name) VALUES ('DELETE');
 
 -- Insert roles
-INSERT INTO roles (role) VALUES ('ADMIN');
-INSERT INTO roles (role) VALUES ('EMPLOYEE');
-INSERT INTO roles (role) VALUES ('CUSTOMER');
+INSERT INTO roles (name) VALUES ('ADMIN');
+INSERT INTO roles (name) VALUES ('EMPLOYEE');
+INSERT INTO roles (name) VALUES ('CUSTOMER');
 
 -- Link ADMIN role to all permissions
 INSERT INTO role_permissions (role_id, permission_id)
-SELECT r.id, p.id FROM roles r CROSS JOIN permissions p WHERE r.role = 'ADMIN';
+SELECT r.id, p.id FROM roles r CROSS JOIN permissions p WHERE r.name = 'ADMIN';
 
 -- Create default admin user (password stored in plain text for now)
 INSERT INTO users (first_name, last_name, email, password, phone_number, role_id, deleted)
