@@ -47,7 +47,7 @@ public class LoginController {
             newUser = new User(user.getFirst_name(), user.getLast_name(), user.getEmail(), user.getPhone_number(), hashedPassword, role);
             userRepository.save(newUser);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
         return ResponseEntity.ok().body("User created successfully!");
 
@@ -71,20 +71,28 @@ public class LoginController {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
             }
         } catch (Exception e){
-                throw new RuntimeException(e);
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
     @GetMapping(value = "/getUser/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<User> getUser(@PathVariable String email, HttpServletRequest request) {
-        User user = (User) userRepository.findByEmail(email).orElse(null);
+    public ResponseEntity<? extends Object> getUserByEmail(@PathVariable String email, HttpServletRequest request) {
+        try {
+            User user = (User) userRepository.findByEmail(email).orElse(null);
 
-        User requester = (User) request.getAttribute("user");
-        if (requester == null || !permissionChecker.hasPermission(requester, "READ")) {
-            return ResponseEntity.status(403).body(null);
+            User requester = (User) request.getAttribute("user");
+            if (requester == null || !permissionChecker.hasPermission(requester, "READ")) {
+                return ResponseEntity.status(403).body(null);
+            }
+
+            if (user == null) {
+                throw new RuntimeException("User with email " + email + " not found!");
+            }
+
+            return ResponseEntity.ok().body(user);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
-
-        return ResponseEntity.ok().body(user);
     }
 
 }

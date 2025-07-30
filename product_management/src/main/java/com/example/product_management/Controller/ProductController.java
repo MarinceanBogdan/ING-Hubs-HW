@@ -99,7 +99,25 @@ public class ProductController {
             productService.updateProduct(oldProduct, product);
             return ResponseEntity.ok().body("Product updated!");
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping(value = "/deleteProduct/{id}")
+    public ResponseEntity<String> deleteProduct(@PathVariable Long id, HttpServletRequest request) {
+        try {
+            User requester = (User) request.getAttribute("user");
+            if (requester == null || !permissionChecker.hasPermission(requester, "DELETE")) {
+                return ResponseEntity.status(403).body(null);
+            }
+
+            productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product with id " + id + " not found"));
+
+            productRepository.deleteById(id);
+
+            return ResponseEntity.ok().body("Product with id " + id + " deleted!");
+        } catch (Exception ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
         }
     }
 }

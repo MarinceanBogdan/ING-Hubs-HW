@@ -34,7 +34,7 @@ public class OrderController {
 
             return ResponseEntity.ok().body("Order processed successfully!");
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 }
