@@ -16,7 +16,7 @@ SELECT r.id, p.id FROM roles r CROSS JOIN permissions p WHERE r.name = 'ADMIN';
 -- Set Permissions for role Employee and Customer
 INSERT INTO role_permissions (role_id, permission_id) VALUES (2, 1);
 INSERT INTO role_permissions (role_id, permission_id) VALUES (2, 2);
-INSERT INTO role_permissions (role_id, permission_id) VALUES (3, 1);
+INSERT INTO role_permissions (role_id, permission_id) VALUES (2, 4);
 INSERT INTO role_permissions (role_id, permission_id) VALUES (3, 2);
 INSERT INTO role_permissions (role_id, permission_id) VALUES (3, 4);
 
