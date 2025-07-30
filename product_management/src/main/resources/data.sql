@@ -21,7 +21,7 @@ INSERT INTO role_permissions (role_id, permission_id) VALUES (3, 2);
 INSERT INTO role_permissions (role_id, permission_id) VALUES (3, 4);
 
 
--- Create default admin user (password stored in plain text for now)
+-- Create default admin user
 INSERT INTO users (first_name, last_name, email, password, phone_number, role_id, deleted)
 VALUES (
     'Admin',
@@ -31,4 +31,22 @@ VALUES (
     '0000000000',
     1,
     false
+);
+
+INSERT INTO product (name, category, description, price, quantity)
+VALUES (
+'Laptop',
+'Electronics',
+'Asus laptop 16GB RAM',
+4000,
+10
+);
+
+INSERT INTO product (name, category, description, price, quantity)
+VALUES (
+'Shirt',
+'Clothes',
+'100% Cotton',
+200,
+15
 );

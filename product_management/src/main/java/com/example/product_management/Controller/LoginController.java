@@ -38,7 +38,7 @@ public class LoginController {
         try {
             User newUser = (User) userRepository.findByEmail(user.getEmail()).orElse(null);
             if(newUser != null) {
-                throw new DataException("User already exists exists!", new SQLDataException());
+                throw new DataException("User already exists!", new SQLDataException());
             }
 
             PasswordEncoder encoder = new BCryptPasswordEncoder();
