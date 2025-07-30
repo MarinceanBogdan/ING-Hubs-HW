@@ -14,8 +14,14 @@ public class ProductService {
     @Autowired
     ProducTRepository productRepository;
 
-    public void updateProduct(Product oldProduct, ProductDto product) {
+    public void updateProduct(Product oldProduct, ProductDto product) throws Exception {
 
+        if(product.getPrice() < 0 ){
+            throw new Exception("Price can not be negative!");
+        }
+        if(product.getQuantity() < 0) {
+            throw new Exception("Quantity can not be negative!");
+        }
         if(product.getName() != null) {
             oldProduct.setName(product.getName());
         }
@@ -33,5 +39,18 @@ public class ProductService {
         }
 
         productRepository.save(oldProduct);
+    }
+
+    public void addProduct(Product product) throws Exception {
+
+        if(product.getPrice() < 0) {
+            throw new Exception("Price can not be negative!");
+        }
+        if(product.getQuantity() < 0) {
+            throw new Exception("Quantity can not be negative!");
+        }
+
+        Product newProduct = new Product(product.getName(), product.getCategory(), product.getDescription(), product.getPrice(), product.getQuantity());
+        productRepository.save(product);
     }
 }

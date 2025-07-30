@@ -67,32 +67,39 @@ public class ProductController {
     @PostMapping(value = "/addProduct", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> addProduct(@RequestBody Product product, HttpServletRequest request) {
 
-        User requester = (User) request.getAttribute("user");
-        if (requester == null || !permissionChecker.hasPermission(requester, "WRITE")) {
-            return ResponseEntity.status(403).body(null);
+        try {
+            User requester = (User) request.getAttribute("user");
+            if (requester == null || !permissionChecker.hasPermission(requester, "WRITE")) {
+                return ResponseEntity.status(403).body(null);
+            }
+
+            productService.addProduct(product);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
 
-        Product newProduct = new Product(product.getName(), product.getCategory(), product.getDescription(), product.getPrice(), product.getQuantity());
-        productRepository.save(product);
 
         return ResponseEntity.ok().body("New product added!");
     }
 
     @PutMapping(value = "/updateProduct/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> updateProduct(@PathVariable Long id, @RequestBody ProductDto product, HttpServletRequest request) throws Exception {
-        User requester = (User) request.getAttribute("user");
-        if (requester == null || !permissionChecker.hasPermission(requester, "WRITE")) {
-            return ResponseEntity.status(403).body(null);
+    public ResponseEntity<String> updateProduct(@PathVariable Long id, @RequestBody ProductDto product, HttpServletRequest request) {
+        try {
+            User requester = (User) request.getAttribute("user");
+            if (requester == null || !permissionChecker.hasPermission(requester, "WRITE")) {
+                return ResponseEntity.status(403).body(null);
+            }
+
+            Product oldProduct =(Product) productRepository.findById(id).orElse(null);
+
+            if(oldProduct == null) {
+                throw new Exception("Product not found!");
+            }
+
+            productService.updateProduct(oldProduct, product);
+            return ResponseEntity.ok().body("Product updated!");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-
-        Product oldProduct =(Product) productRepository.findById(id).orElse(null);
-
-        if(oldProduct == null) {
-            throw new Exception("Product not found!");
-        }
-
-        productService.updateProduct(oldProduct, product);
-
-        return ResponseEntity.ok().body("Product updated!");
     }
 }
