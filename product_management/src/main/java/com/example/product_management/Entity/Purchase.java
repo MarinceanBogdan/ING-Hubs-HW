@@ -1,15 +1,14 @@
 package com.example.product_management.Entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Data
 @Table(name = "purchases")
 @NoArgsConstructor
 @AllArgsConstructor
+@RequiredArgsConstructor
 public class Purchase {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -17,8 +16,10 @@ public class Purchase {
 
     @ManyToOne
     @JoinColumn(name = "product_id")
+    @NonNull
     private Product product;
 
+    @NonNull
     private int amount;
 
     @ManyToOne

@@ -2,9 +2,7 @@ package com.example.product_management.Entity;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -15,6 +13,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@RequiredArgsConstructor
 public class Order {
 
     @Id
@@ -23,10 +22,15 @@ public class Order {
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
+    @NonNull
     private User customer;
 
     @OneToMany(mappedBy = ("order"), cascade = CascadeType.ALL)
+    @NonNull
     private List<Purchase> purchaseList;
+
+    @NonNull
+    private float totalCost;
 
     private LocalDateTime order_date = LocalDateTime.now();
 }
