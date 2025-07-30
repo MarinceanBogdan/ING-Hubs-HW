@@ -69,7 +69,7 @@ public class ProductController {
 
         try {
             User requester = (User) request.getAttribute("user");
-            if (requester == null || !permissionChecker.hasPermission(requester, "WRITE")) {
+            if (requester == null || !permissionChecker.hasPermission(requester, "UPDATE")) {
                 return ResponseEntity.status(403).body(null);
             }
 
