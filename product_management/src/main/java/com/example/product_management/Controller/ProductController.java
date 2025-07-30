@@ -3,7 +3,7 @@ package com.example.product_management.Controller;
 import com.example.product_management.Dto.ProductDto;
 import com.example.product_management.Entity.Product;
 import com.example.product_management.Entity.User;
-import com.example.product_management.Repository.ProducTRepository;
+import com.example.product_management.Repository.ProductRepository;
 import com.example.product_management.Security.PermissionChecker;
 import com.example.product_management.Service.ProductService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,7 +21,7 @@ public class ProductController {
     @Autowired
     PermissionChecker permissionChecker;
     @Autowired
-    ProducTRepository productRepository;
+    ProductRepository productRepository;
     @Autowired
     ProductService productService;
 
@@ -69,16 +69,14 @@ public class ProductController {
 
         try {
             User requester = (User) request.getAttribute("user");
-            if (requester == null || !permissionChecker.hasPermission(requester, "UPDATE")) {
+            if (requester == null || !permissionChecker.hasPermission(requester, "WRITE")) {
                 return ResponseEntity.status(403).body(null);
             }
 
             productService.addProduct(product);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
-
-
         return ResponseEntity.ok().body("New product added!");
     }
 
@@ -86,7 +84,7 @@ public class ProductController {
     public ResponseEntity<String> updateProduct(@PathVariable Long id, @RequestBody ProductDto product, HttpServletRequest request) {
         try {
             User requester = (User) request.getAttribute("user");
-            if (requester == null || !permissionChecker.hasPermission(requester, "WRITE")) {
+            if (requester == null || !permissionChecker.hasPermission(requester, "UPDATE")) {
                 return ResponseEntity.status(403).body(null);
             }
 

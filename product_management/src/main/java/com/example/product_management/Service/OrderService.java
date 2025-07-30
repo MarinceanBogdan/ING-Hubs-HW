@@ -1,13 +1,12 @@
 package com.example.product_management.Service;
 
 import com.example.product_management.Dto.OrderDto;
-import com.example.product_management.Dto.PurchaseDto;
 import com.example.product_management.Entity.Order;
 import com.example.product_management.Entity.Product;
 import com.example.product_management.Entity.Purchase;
 import com.example.product_management.Entity.User;
 import com.example.product_management.Repository.OrderRepository;
-import com.example.product_management.Repository.ProducTRepository;
+import com.example.product_management.Repository.ProductRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,7 +21,7 @@ public class OrderService {
     @Autowired
     OrderRepository orderRepository;
     @Autowired
-    ProducTRepository productRepository;
+    ProductRepository productRepository;
 
     @Transactional
     public void addOrder(OrderDto order, User customer) {

@@ -2,7 +2,7 @@ package com.example.product_management.Service;
 
 import com.example.product_management.Dto.ProductDto;
 import com.example.product_management.Entity.Product;
-import com.example.product_management.Repository.ProducTRepository;
+import com.example.product_management.Repository.ProductRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 public class ProductService {
 
     @Autowired
-    ProducTRepository productRepository;
+    ProductRepository productRepository;
 
     @Transactional
     public void updateProduct(Product oldProduct, ProductDto product) throws Exception {
